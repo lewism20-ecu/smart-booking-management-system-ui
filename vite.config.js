@@ -13,7 +13,7 @@ export default defineConfig(({ mode }) => {
         "/api/v1": {
           target: localApiTarget,
           changeOrigin: true,
-          secure: false,
+          secure: localApiTarget.startsWith("https"),
         },
       },
     },

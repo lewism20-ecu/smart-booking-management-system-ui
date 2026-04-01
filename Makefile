@@ -1,7 +1,7 @@
 SHELL := /bin/bash
 
 LOCAL_API_ORIGIN ?= http://localhost:8080
-HOSTED_API_BASE_URL ?=
+HOSTED_API_BASE_URL ?= https://sbms-api-237507980083.us-east1.run.app/api/v1
 
 .PHONY: help dev dev-local dev-hosted dev-mock check clean
 
@@ -26,7 +26,7 @@ dev-hosted:
 		echo "Example: make dev-hosted HOSTED_API_BASE_URL=https://your-api.example.com/api/v1"; \
 		exit 1; \
 	fi
-	VITE_AUTH_MODE=api VITE_ENABLE_MOCK_WORKER=false VITE_API_BASE_URL=$(HOSTED_API_BASE_URL) npm run dev
+	VITE_AUTH_MODE=api VITE_ENABLE_MOCK_WORKER=false VITE_API_BASE_URL=/api/v1 VITE_DEV_PROXY_TARGET=$(shell echo $(HOSTED_API_BASE_URL) | sed 's|/api/v1||') npm run dev
 
 dev-mock:
 	VITE_AUTH_MODE=mock VITE_ENABLE_MOCK_WORKER=true npm run dev
