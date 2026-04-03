@@ -1,0 +1,29 @@
+[
+  {
+    "venue_id": 1,
+    "name": "Main Campus",
+    "location": "123 University Ave",
+    "approval_required": true,
+    "manager_ids": [2],
+    "image_url": "https://images.unsplash.com/photo-1562774053-701939374585?w=800&q=80",
+    "total_seats": 68
+  },
+  {
+    "venue_id": 2,
+    "name": "Innovation Hub",
+    "location": "456 Tech Park Blvd",
+    "approval_required": false,
+    "manager_ids": [2],
+    "image_url": "https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&q=80",
+    "total_seats": 40
+  },
+  {
+    "venue_id": 3,
+    "name": "Downtown Office",
+    "location": "789 Central St",
+    "approval_required": true,
+    "manager_ids": [],
+    "image_url": "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&q=80",
+    "total_seats": 30
+  }
+]

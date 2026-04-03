@@ -9,17 +9,23 @@ import {
   CircularProgress,
   Container,
   FormControlLabel,
+  IconButton,
   Link,
   Stack,
   TextField,
+  Tooltip,
   Typography,
 } from "@mui/material";
 import BusinessOutlinedIcon from "@mui/icons-material/BusinessOutlined";
+import DarkModeOutlinedIcon from "@mui/icons-material/DarkModeOutlined";
+import LightModeOutlinedIcon from "@mui/icons-material/LightModeOutlined";
 import MailOutlineIcon from "@mui/icons-material/MailOutline";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
-import { Link as RouterLink } from "react-router";
+import { Link as RouterLink, useNavigate } from "react-router";
 import { login } from "../api/authClient";
+import { useColorMode } from "../../../app/ColorModeContext";
+import { saveSession } from "../utils/session";
 
 const defaultForm = {
   email: "",
@@ -27,11 +33,12 @@ const defaultForm = {
 };
 
 export default function LoginPage() {
+  const { mode, toggleColorMode } = useColorMode();
+  const navigate = useNavigate();
   const [formValues, setFormValues] = useState(defaultForm);
   const [rememberMe, setRememberMe] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-  const [authResult, setAuthResult] = useState(null);
 
   const onChangeField = (event) => {
     const { name, value } = event.target;
@@ -45,7 +52,6 @@ export default function LoginPage() {
     event.preventDefault();
 
     setErrorMessage("");
-    setAuthResult(null);
     setIsSubmitting(true);
 
     try {
@@ -54,15 +60,8 @@ export default function LoginPage() {
         password: formValues.password,
       });
 
-      sessionStorage.removeItem("sbms.token");
-      sessionStorage.removeItem("sbms.user");
-      localStorage.removeItem("sbms.token");
-      localStorage.removeItem("sbms.user");
-
-      const storage = rememberMe ? localStorage : sessionStorage;
-      storage.setItem("sbms.token", data.token);
-      storage.setItem("sbms.user", JSON.stringify(data.user));
-      setAuthResult(data);
+      saveSession({ token: data.token, user: data.user, rememberMe });
+      navigate("/dashboard", { replace: true });
     } catch (error) {
       setErrorMessage(error.message);
     } finally {
@@ -120,7 +119,8 @@ export default function LoginPage() {
           sx={{
             width: "100%",
             maxWidth: 640,
-            border: "1px solid #d9dde6",
+            border: "1px solid",
+            borderColor: "divider",
             borderRadius: "16px",
             boxShadow: "0 10px 30px rgba(26, 35, 64, 0.08)",
           }}
@@ -154,7 +154,7 @@ export default function LoginPage() {
                     size="small"
                     sx={{
                       "& .MuiOutlinedInput-root": {
-                        backgroundColor: "#f4f5f8",
+                        backgroundColor: "background.default",
                       },
                     }}
                   />
@@ -186,7 +186,7 @@ export default function LoginPage() {
                     size="small"
                     sx={{
                       "& .MuiOutlinedInput-root": {
-                        backgroundColor: "#f4f5f8",
+                        backgroundColor: "background.default",
                       },
                     }}
                   />
@@ -209,9 +209,16 @@ export default function LoginPage() {
                     }
                     label={<Typography variant="body2">Remember me</Typography>}
                   />
-                  <Link href="#" underline="hover" sx={{ fontSize: 14 }}>
+                  <Typography
+                    variant="body2"
+                    sx={{
+                      fontSize: 14,
+                      textDecoration: "line-through",
+                      color: "text.disabled",
+                    }}
+                  >
                     Forgot password?
-                  </Link>
+                  </Typography>
                 </Stack>
 
                 <Button
@@ -245,12 +252,6 @@ export default function LoginPage() {
               </Alert>
             ) : null}
 
-            {authResult ? (
-              <Alert severity="success" sx={{ mt: 2, textAlign: "left" }}>
-                Logged in as {authResult.user.email} ({authResult.user.role})
-              </Alert>
-            ) : null}
-
             <Typography variant="body1" sx={{ mt: 3 }}>
               Don&apos;t have an account?{" "}
               <Link
@@ -265,9 +266,46 @@ export default function LoginPage() {
           </CardContent>
         </Card>
 
-        <Typography variant="body2" color="text.secondary">
-          &copy; 2026 Smart Booking System. All rights reserved.
-        </Typography>
+        <Stack
+          direction="row"
+          alignItems="center"
+          justifyContent="center"
+          spacing={0.5}
+        >
+          <Typography variant="body2" color="text.secondary">
+            &copy; 2026 Smart Booking System. All rights reserved.
+          </Typography>
+          <Button
+            onClick={toggleColorMode}
+            size="small"
+            aria-label="toggle color mode"
+            startIcon={
+              mode === "light" ? (
+                <DarkModeOutlinedIcon />
+              ) : (
+                <LightModeOutlinedIcon />
+              )
+            }
+            sx={{
+              borderRadius: "20px",
+              px: 1.5,
+              py: 0.5,
+              textTransform: "none",
+              fontSize: 13,
+              fontWeight: 500,
+              border: "1px solid",
+              borderColor: "divider",
+              color: "text.secondary",
+              backgroundColor: "background.paper",
+              "&:hover": {
+                backgroundColor: "action.hover",
+                borderColor: "text.secondary",
+              },
+            }}
+          >
+            {mode === "light" ? "Dark mode" : "Light mode"}
+          </Button>
+        </Stack>
       </Stack>
     </Container>
   );

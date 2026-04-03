@@ -1,0 +1,65 @@
+[
+  {
+    "resource_id": 1,
+    "name": "Desk A1",
+    "type": "desk",
+    "capacity": 1,
+    "venue_id": 1,
+    "venue_name": "Main Campus",
+    "approval_required": false
+  },
+  {
+    "resource_id": 2,
+    "name": "Desk A2",
+    "type": "desk",
+    "capacity": 1,
+    "venue_id": 1,
+    "venue_name": "Main Campus",
+    "approval_required": false
+  },
+  {
+    "resource_id": 3,
+    "name": "Conference Room A",
+    "type": "room",
+    "capacity": 12,
+    "venue_id": 1,
+    "venue_name": "Main Campus",
+    "approval_required": true
+  },
+  {
+    "resource_id": 4,
+    "name": "Conference Room B",
+    "type": "room",
+    "capacity": 8,
+    "venue_id": 1,
+    "venue_name": "Main Campus",
+    "approval_required": true
+  },
+  {
+    "resource_id": 5,
+    "name": "Hot Desk 12",
+    "type": "desk",
+    "capacity": 1,
+    "venue_id": 2,
+    "venue_name": "Innovation Hub",
+    "approval_required": false
+  },
+  {
+    "resource_id": 6,
+    "name": "Meeting Room 3B",
+    "type": "room",
+    "capacity": 6,
+    "venue_id": 3,
+    "venue_name": "Downtown Office",
+    "approval_required": true
+  },
+  {
+    "resource_id": 7,
+    "name": "Lecture Hall B",
+    "type": "room",
+    "capacity": 80,
+    "venue_id": 1,
+    "venue_name": "Main Campus",
+    "approval_required": true
+  }
+]

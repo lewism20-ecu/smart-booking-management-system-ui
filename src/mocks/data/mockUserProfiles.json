@@ -1,0 +1,26 @@
+[
+  {
+    "userId": 1,
+    "email": "admin@example.com",
+    "role": "admin",
+    "managedVenues": []
+  },
+  {
+    "userId": 2,
+    "email": "manager@example.com",
+    "role": "manager",
+    "managedVenues": ["Main Campus", "Innovation Hub"]
+  },
+  {
+    "userId": 3,
+    "email": "alice@example.com",
+    "role": "user",
+    "managedVenues": []
+  },
+  {
+    "userId": 4,
+    "email": "bob@example.com",
+    "role": "user",
+    "managedVenues": []
+  }
+]
