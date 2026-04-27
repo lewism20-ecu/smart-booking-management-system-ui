@@ -46,7 +46,9 @@ export default function ApprovalsPage() {
   const fetchBookings = useCallback(() => {
     setLoading(true);
     apiFetch("/bookings")
-      .then((data) => setBookings(data.bookings ?? []))
+      .then((data) =>
+        setBookings(Array.isArray(data) ? data : (data.bookings ?? [])),
+      )
       .catch((e) => setError(e.message))
       .finally(() => setLoading(false));
   }, []);

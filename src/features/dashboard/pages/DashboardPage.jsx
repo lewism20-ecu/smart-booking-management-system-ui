@@ -86,10 +86,20 @@ function AdminDashboard() {
   const [error, setError] = useState("");
 
   useEffect(() => {
-    Promise.all([apiFetch("/bookings"), apiFetch("/users")])
+    Promise.all([
+      apiFetch("/bookings"),
+      // Fallback silently if /users is 403 or 404 (Admin APIs might not exist in backend)
+      apiFetch("/users").catch(() => ({ users: [] })),
+    ])
       .then(([bookingsData, usersData]) => {
-        setBookings(bookingsData.bookings ?? []);
-        setUsers(usersData.users ?? []);
+        setBookings(
+          Array.isArray(bookingsData)
+            ? bookingsData
+            : (bookingsData.bookings ?? []),
+        );
+        setUsers(
+          Array.isArray(usersData) ? usersData : (usersData.users ?? []),
+        );
       })
       .catch((e) => setError(e.message))
       .finally(() => setLoading(false));

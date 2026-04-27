@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Outlet,
   useNavigate,
@@ -41,7 +41,13 @@ import LightModeOutlinedIcon from "@mui/icons-material/LightModeOutlined";
 import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
 import { useColorMode } from "../../../app/ColorModeContext";
-import { getStoredUser, clearSession } from "../../auth/utils/session";
+import {
+  getStoredUser,
+  clearSession,
+  getToken,
+  saveSession,
+} from "../../auth/utils/session";
+import { apiFetch } from "../../../api/apiClient";
 
 const SIDEBAR_WIDTH = 240;
 const SIDEBAR_COLLAPSED_WIDTH = 64;
@@ -278,6 +284,24 @@ export default function DashboardLayout() {
   const [collapsed, setCollapsed] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
   const [notifAnchorEl, setNotifAnchorEl] = useState(null);
+
+  // Validate the user's session with the backend against /users/me
+  // This ensures deleted/demoted users are logged out/updated and caches fresh info.
+  useEffect(() => {
+    apiFetch("/users/me")
+      .then((data) => {
+        if (data && data.role !== user?.role) {
+          const token = getToken();
+          if (token) {
+            // determine simple storage preference based on what was used
+            const isLocal = !!localStorage.getItem("sbms.token");
+            saveSession({ token, user: data, rememberMe: isLocal });
+            window.location.reload();
+          }
+        }
+      })
+      .catch(() => {});
+  }, [user]);
 
   const navItems = getNavItems(user?.role);
   const sidebarWidth =

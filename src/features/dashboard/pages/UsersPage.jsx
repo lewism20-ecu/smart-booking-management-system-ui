@@ -37,7 +37,7 @@ export default function UsersPage() {
 
   useEffect(() => {
     apiFetch("/users")
-      .then((data) => setUsers(data.users ?? []))
+      .then((data) => setUsers(Array.isArray(data) ? data : (data.users ?? [])))
       .catch((e) => setError(e.message))
       .finally(() => setLoading(false));
   }, []);

@@ -50,7 +50,9 @@ export default function ResourcesPage() {
   const fetchResources = useCallback(() => {
     setLoading(true);
     apiFetch("/resources")
-      .then((data) => setResources(data.resources ?? []))
+      .then((data) =>
+        setResources(Array.isArray(data) ? data : (data.resources ?? [])),
+      )
       .catch((e) => setError(e.message))
       .finally(() => setLoading(false));
   }, []);

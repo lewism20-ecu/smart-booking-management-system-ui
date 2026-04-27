@@ -88,13 +88,13 @@ export default function ReportsPage() {
   useEffect(() => {
     Promise.all([
       apiFetch("/bookings"),
-      apiFetch("/users"),
-      apiFetch("/resources"),
+      apiFetch("/users").catch(() => ({ users: [] })), // Allow dashboard to render even if Admin API is missing
+      apiFetch("/resources").catch(() => ({ resources: [] })),
     ])
       .then(([b, u, r]) => {
-        setBookings(b.bookings ?? []);
-        setUsers(u.users ?? []);
-        setResources(r.resources ?? []);
+        setBookings(Array.isArray(b) ? b : (b.bookings ?? []));
+        setUsers(Array.isArray(u) ? u : (u.users ?? []));
+        setResources(Array.isArray(r) ? r : (r.resources ?? []));
       })
       .catch((e) => setError(e.message))
       .finally(() => setLoading(false));
