@@ -57,6 +57,31 @@ export default function SignupPage() {
     setErrorMessage("");
     setSuccessMessage("");
 
+    if (formValues.password.length < 8) {
+      setErrorMessage("Password must be at least 8 characters.");
+      return;
+    }
+
+    if (!/[A-Z]/.test(formValues.password)) {
+      setErrorMessage("Password must contain at least one uppercase letter.");
+      return;
+    }
+
+    if (!/[a-z]/.test(formValues.password)) {
+      setErrorMessage("Password must contain at least one lowercase letter.");
+      return;
+    }
+
+    if (!/\d/.test(formValues.password)) {
+      setErrorMessage("Password must contain at least one number.");
+      return;
+    }
+
+    if (!/[^A-Za-z0-9]/.test(formValues.password)) {
+      setErrorMessage("Password must contain at least one special character.");
+      return;
+    }
+
     if (formValues.password !== formValues.confirmPassword) {
       setErrorMessage("Passwords do not match.");
       return;
